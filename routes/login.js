@@ -25,7 +25,13 @@ const loginUser = (req, res) => {
         res.send({ message: "User not found" });
       } else {
         console.log("passwords", password, users[0].password);
-        matchPass = bcrypt.compare(password, users[0].password);
+        bcrypt.compare(password, users[0].password, function(err,result) {
+          if (result) {
+            console.log("logou");
+          } else {
+            console.log("nao logou");
+          }
+        });
       }
       console.log("users", users);
       console.log("teste", matchPass);
