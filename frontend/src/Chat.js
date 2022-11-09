@@ -2,6 +2,7 @@ import { Avatar } from '@material-ui/core';
 import React from 'react';
 import "./Chat.css";
 
+//integrar com o database
 function Chat() {
   return (
     <div className='chat'>
@@ -13,7 +14,7 @@ function Chat() {
             </div>
             
         </div>
-        //integrar com o database
+        
         <div className='chat_body'>
           
          
@@ -24,6 +25,10 @@ function Chat() {
 
         </div>
         <div className='chat_footer'>
+          <form>
+            <input placeholder="Type a message" type="text"/>
+            <button>Send</button> 
+          </form>
 
         </div>
     </div>

@@ -1,9 +1,10 @@
 .sidebar{ 
     display: flex;
-    flex: 0.35;
+    flex: 0.20;
     flex-direction: column;
 }
 .sidebar_header{
+    
     display: flex;
     justify-content: space-between;
     padding: 20px;
@@ -15,7 +16,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-width:  10vw;
+    min-width:  11vw;
 
 }
 
@@ -25,6 +26,8 @@
 }
 
 .sidebar_chat{
+    
+    margin-top: 10px;
     flex: 1;
     background-color: white;
     overflow: scroll;

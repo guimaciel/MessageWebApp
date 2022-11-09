@@ -8,6 +8,8 @@ function App() {
         <div className="App">
             <div className="app_body">
                 <Sidebar/>
+                
+                <Chat/>
 
             </div>
 
