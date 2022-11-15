@@ -9,14 +9,20 @@ const dbCredentials = {
   port: process.env.DB_PORT,
 };
 
-const getRooms = (req, res) => {
+const getMessages = (req, res) => {
+  const room = 1;
   const pool = new Pool(dbCredentials);
   pool
     .query(
-      `SELECT name FROM rooms
-    JOIN room_users
-    ON rooms.id = room
-    `
+      `SELECT users.name AS user, message, dt_message, rooms.name FROM messages
+    JOIN rooms
+    ON room = rooms.id
+    JOIN users
+    ON users.id = messages.user_id
+    WHERE rooms.id = $1
+    ;
+    `,
+      [room]
     )
     .then((res) => res.rows)
     .then((messages) => {
@@ -30,4 +36,4 @@ const getRooms = (req, res) => {
     });
 };
 
-module.exports = { getRooms };
+module.exports = { getMessages };

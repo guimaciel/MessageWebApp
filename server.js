@@ -8,6 +8,7 @@ const { hashPassword } = require("./helpers/users");
 const { registerUser } = require("./routes/register");
 const { getRooms } = require("./routes/rooms");
 const { loginUser } = require("./routes/login");
+const { getMessages } = require("./routes/messages");
 require("dotenv").config();
 
 const app = express();
@@ -42,5 +43,7 @@ app.get("/rooms", getRooms);
 app.post("/register", registerUser);
 
 app.post("/login", loginUser);
+
+app.get("/messages", getMessages);
 
 app.listen(port, () => console.log(`Server is runing on port ${port}`));
