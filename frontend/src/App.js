@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import "./App.css";
+import axios from "axios";
 import Sidebar from "./Sidebar";
 import Chat from "./Chat"
 import Login from "./Login";

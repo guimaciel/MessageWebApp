@@ -11,7 +11,7 @@ const { loginUser } = require("./routes/login");
 const { getMessages } = require("./routes/messages");
 require("dotenv").config();
 
-const session = require("express-session");
+// const session = require("express-session");
 
 const app = express();
 
