@@ -20,7 +20,7 @@ const loginUser = (req, res) => {
     .query("SELECT * FROM users WHERE email = $1", [email])
     .then((res) => res.rows)
     .then((users) => {
-      if (res.rows === 0) {
+      if (users.length !== 1) {
         console.log("users", users);
         res.send({ message: "User not found" });
       } else {
@@ -28,6 +28,8 @@ const loginUser = (req, res) => {
         bcrypt.compare(password, users[0].password, function(err,result) {
           if (result) {
             console.log("logou");
+            req.session.userId = users[0].id;
+            res.send({message: "saves"}).status(201);
           } else {
             console.log("nao logou");
           }
