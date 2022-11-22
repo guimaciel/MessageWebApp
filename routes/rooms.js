@@ -13,14 +13,15 @@ const getRooms = (req, res) => {
   const pool = new Pool(dbCredentials);
   pool
     .query(
-      `SELECT name FROM rooms
-    JOIN room_users
-    ON rooms.id = room
+      `SELECT distinct rooms.id, rooms.name FROM rooms
+    JOIN rooms_users
+    ON rooms.id = rooms_users.room
     `
     )
     .then((res) => res.rows)
     .then((messages) => {
       console.log("messages", messages);
+      res.json(messages);
     })
     .catch((err) => {
       console.log("err", err);

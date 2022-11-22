@@ -62,7 +62,7 @@ app.post("/register", registerUser);
 
 app.post("/login", loginUser);
 
-app.get("/messages", getMessages);
+app.get("/messages/:id", getMessages);
 
 // Apenas para referencia do uso de cookie session - apagar depois de pronto ------->
 app.post('/new', async(req, res) => {

@@ -1,15 +1,18 @@
 import { Avatar } from '@material-ui/core';
 import React from 'react';
 import "./Chat.css";
+import ChatList from './Components/ChatList';
 
 //integrar com o database
-function Chat() {
+function Chat(props) {
+
+  
   return (
     <div className='chat'>
         <div className='chat_header'>
             <Avatar/>
             <div className='chat_headerInfo'>
-                <h3>Room name</h3>
+                <h3>{props.room.name}</h3>
 
             </div>
             
@@ -18,8 +21,12 @@ function Chat() {
         <div className='chat_body'>
           
          
-            <span className='chat_name'></span>
-            <span className='chat_timestamp'></span>
+            {/* <span className='chat_name'>dddd</span>
+            <span className='chat_timestamp'>13:30</span> */}
+
+            <ChatList chatList={props.messages} />
+
+
         
           
 

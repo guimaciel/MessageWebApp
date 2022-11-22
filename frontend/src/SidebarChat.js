@@ -1,15 +1,21 @@
 import { Avatar } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
-import "./SidebarChat.css"
+import axios from 'axios';
 
-function SidebarChat(addNewChat) {
+import RoomList from "./Components/RoomList";
+
+function SidebarChat(props) {
+
+    const addNewChat = true;
 
     const [seed, setSeed] = useState('');
-
+    
     useEffect(()=> {
         setSeed(Math.floor(Math.random() *5000))         
+
     }, []);
 
+    
     const createChat = () => {
         //melhorar!!
         const roomName = prompt("Insert your chat name");
@@ -19,8 +25,14 @@ function SidebarChat(addNewChat) {
         }
     };
 
+    const changeRoom = (e) => {;
+        props.setRoom({id: e.target.id,
+                        name: e.target.innerHTML });
+    }
+
 
     return !addNewChat ? (
+        
         <div className='sidebarChat'>
             <Avatar src={`http://avatars.dicebar.com/api/human/${seed}.svg`}/>
             <div className='sidebarChat_info'>
@@ -29,8 +41,14 @@ function SidebarChat(addNewChat) {
             </div>
         </div>
   ) : (
-    <div onClick={createChat} className='sidebarChat'>
-        <h2>Start new chat</h2>
+    <div>
+        <div className='sidebar_item' onClick={changeRoom}>
+            <RoomList roomList={props.rooms} />
+        </div>
+        <div onClick={createChat} className='sidebar_item'>
+
+            <h2>Start new chat</h2>
+        </div>
     </div>
   )
 
