@@ -1,4 +1,4 @@
-.sidebar_chat {
+.sidebar_chat, .sidebar_item {
     text-align: center;
     display:inline-flexbox;
     padding-left: 10px;
@@ -8,7 +8,7 @@
 
 }
 
-.sidebar_chat :hover{
+.sidebar_item :hover{
     border-radius: 10px;
     background-color: #ebebeb;
 
