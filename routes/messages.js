@@ -10,11 +10,11 @@ const dbCredentials = {
 };
 
 const getMessages = (req, res) => {
-  const room = 1;
+  const room = req.params.id;
   const pool = new Pool(dbCredentials);
   pool
     .query(
-      `SELECT users.name AS user, message, dt_message, rooms.name FROM messages
+      `SELECT users.name AS userName, users.id AS userId, message AS message, dt_message AS dtMessage, messages.id as idMessage, rooms.name AS roomName, rooms.id as roomId FROM messages
     JOIN rooms
     ON room = rooms.id
     JOIN users
@@ -27,6 +27,7 @@ const getMessages = (req, res) => {
     .then((res) => res.rows)
     .then((messages) => {
       console.log("messages", messages);
+      res.json(messages);
     })
     .catch((err) => {
       console.log("err", err);

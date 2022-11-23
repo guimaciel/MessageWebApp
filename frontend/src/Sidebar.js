@@ -3,10 +3,8 @@ import "./Sidebar.css"
 import SidebarChat from "./SidebarChat";
 import {Avatar, IconButton} from "@material-ui/core";
 
+function Sidebar(props){
 
- 
-
-function Sidebar(){
     return(
         <div className="sidebar ">
             <div className="sidebar_header">
@@ -27,9 +25,9 @@ function Sidebar(){
 
             </div>
             <div className="sidebar_chat">
-                <SidebarChat addNewChat/>
-                
-
+                <SidebarChat rooms={props.rooms}
+                            setRoom={props.setRoom}
+                /> 
             </div>
         </div>
     )
