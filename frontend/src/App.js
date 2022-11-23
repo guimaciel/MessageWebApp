@@ -11,6 +11,7 @@ function App() {
   const [rooms, setRooms] = useState([]);
   const [room, setRoom] = useState({});
   const [messages, setMessages] = useState([]);
+  const [message, setMessage] = useState('');
 
 
 
@@ -70,6 +71,16 @@ function App() {
 
   },[room]);
 
+  useEffect(() => {
+    const msg = {
+      message: message,
+      userId: userId,
+      roomId: room.id,
+    }
+    console.log(msg);
+
+  },[message])
+
  if (userId === null) {
   return <Login userId={userId} />
  } else {
@@ -82,7 +93,8 @@ function App() {
                  />
                 
                 <Chat messages={messages} 
-                    room={room} />
+                    room={room} 
+                    setMessage={setMessage} />
 
             </div>
 
