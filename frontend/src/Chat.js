@@ -2,6 +2,7 @@ import { Avatar } from '@material-ui/core';
 import React from 'react';
 import "./Chat.css";
 
+
 //integrar com o database
 function Chat() {
   return (
