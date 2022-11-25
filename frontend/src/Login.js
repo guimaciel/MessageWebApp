@@ -96,14 +96,14 @@ const Login = (props) => {
           <h1>Login</h1>
           <input
             type="text"
-            placeholder="Username..."
+            placeholder="Username"
             onChange={(e) => {
               setUsername(e.target.value);
             }}
           />
           <input
             type="text"
-            placeholder="Password..."
+            placeholder="Password"
             onChange={(e) => {
               setPassword(e.target.value);
             }}

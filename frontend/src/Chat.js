@@ -11,20 +11,14 @@ function Chat() {
             <Avatar/>
             <div className='chat_headerInfo'>
                 <h3>Room name</h3>
-
-            </div>
-            
+            </div>            
         </div>
         
         <div className='chat_body'>
-          
-         
             <span className='chat_name'></span>
             <span className='chat_timestamp'></span>
-        
-          
-
         </div>
+        
         <div className='chat_footer'>
           <form>
             <input placeholder="Type a message" type="text"/>

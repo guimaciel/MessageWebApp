@@ -3,6 +3,7 @@ import "./App.css";
 import Sidebar from "./Sidebar";
 import Chat from "./Chat"
 import Login from "./Login";
+import axios from "axios";
 
 function App() {
 
@@ -19,7 +20,7 @@ function App() {
         setUserId(data.id);
       }
     } catch(error) {
-      console.log("ERRO");
+      console.log("ERROU FEIO ERROU RUDE");
     }
  }
  getCookie();
