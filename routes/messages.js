@@ -37,4 +37,31 @@ const getMessages = (req, res) => {
     });
 };
 
-module.exports = { getMessages };
+const postMessages = (req, res) => {
+  const timeElapsed = Date.now();
+  const today = new Date(timeElapsed);
+
+  const message = req.body;
+  const data = today.toUTCString();
+
+  const pool = new Pool(dbCredentials);
+  pool
+    .query(
+      `INSERT INTO messages (room, user_id, message, dt_message) VALUES ($1, $2, $3 , $4) returning *;
+    `,
+      [message.room.id, message.user.id, message.message, data]
+    )
+    .then((res) => res.rows)
+    .then((messages) => {
+      console.log("messages", messages);
+      res.json(messages);
+    })
+    .catch((err) => {
+      console.log("err", err);
+    })
+    .finally(() => {
+      pool.end();
+    });
+};
+
+module.exports = { getMessages, postMessages };
