@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useRef } from "react";
 import axios from "axios";
+import "./Login.css";
 
 const Login = (props) => {
    const [usernameReg, setUsernameReg] = useState("");
@@ -65,48 +66,51 @@ const Login = (props) => {
       <div className="App">
         <div className="registration">
           <h1>Registration</h1>
-          <label>Username</label>
+          <label></label>
           <input
             type="text"
+            placeholder="Username"
             onChange={(e) => {
               setNameReg(e.target.value);
             }}
           />
-          <label>Username</label>
+          <label></label>
           <input
             type="text"
+            placeholder="e-mail"
             onChange={(e) => {
               setUsernameReg(e.target.value);
             }}
           />
-          <label>Password</label>
+          <label></label>
           <input
             type="text"
+            placeholder="Password"
             onChange={(e) => {
               setPasswordReg(e.target.value);
             }}
           />
           <button onClick={register}>Register</button>
         </div>
-        <div>
+        <div className="login">
           <h1>Login</h1>
           <input
             type="text"
-            placeholder="Username..."
+            placeholder="Username"
             onChange={(e) => {
               setUsername(e.target.value);
             }}
           />
           <input
             type="text"
-            placeholder="Password..."
+            placeholder="Password"
             onChange={(e) => {
               setPassword(e.target.value);
             }}
           />
           <button onClick={login}> Login </button>
         </div>
-        <div>
+        <div className="session">
           <h1>Session</h1>
           <input ref={inputC} />
           <button onClick={storeCookie}> Store Cookie </button>

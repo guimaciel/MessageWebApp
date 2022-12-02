@@ -5,6 +5,7 @@ import io from 'socket.io-client'
 import Sidebar from "./Sidebar";
 import Chat from "./Chat"
 import Login from "./Login";
+import axios from "axios";
 
 const socket = io.connect("http://localhost:8000");
 
@@ -41,7 +42,7 @@ function App() {
         console.log(data);
       }
     } catch(error) {
-      console.log("ERRO");
+      console.log("ERROU FEIO ERROU RUDE");
     }
  }
  getCookie();

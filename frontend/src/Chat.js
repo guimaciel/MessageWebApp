@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react';
 import "./Chat.css";
 import ChatList from './Components/ChatList';
 
+
 //integrar com o database
 function Chat(props) {
 
@@ -30,6 +31,7 @@ function Chat(props) {
         <div className='chat_header'>
             <Avatar/>
             <div className='chat_headerInfo'>
+
                 <h3>{props.room.name}</h3>
 
             </div>
@@ -46,9 +48,9 @@ function Chat(props) {
 
 
         
-          
-
+      
         </div>
+        
         <div className='chat_footer'>
           <form onSubmit={sendMessage}>
             <input name="message" placeholder="Type a message" type="text" disabled={ disableChat } onChange={ (event) => setMessage(event.target.value) }/>
