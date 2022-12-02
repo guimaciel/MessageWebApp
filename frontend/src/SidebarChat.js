@@ -3,12 +3,16 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 
 import RoomList from "./Components/RoomList";
+import CreateRoom from "./Components/CreateRoom";
+import JoinRoom from "./Components/JoinRoom";
 
 function SidebarChat(props) {
 
     const addNewChat = true;
 
     const [seed, setSeed] = useState('');
+    const [showCreateRoom, setShowCreateRoom] = useState(false);
+    const [showJoinRoom, setShowJoineRoom] = useState(false);
     
     useEffect(()=> {
         setSeed(Math.floor(Math.random() *5000))         
@@ -17,18 +21,29 @@ function SidebarChat(props) {
 
     
     const createChat = () => {
-        //melhorar!!
-        const roomName = prompt("Insert your chat name");
-        if (roomName){
-            //integrar com o database
+        setShowCreateRoom(true);
+        setShowJoineRoom(false);
+        // //melhorar!!
+        // const roomName = prompt("Insert your room name");
+        // if (roomName){
+        //     //integrar com o database
 
-        }
+        // }
     };
 
-    const changeRoom = (e) => {;
-        props.setRoom({id: e.target.id,
-                        name: e.target.innerHTML });
+    const joinChat = () => {
+        setShowJoineRoom(true);
+        setShowCreateRoom(false);
     }
+
+    const changeRoom = (e) => {
+        if (e.target.id) {
+            props.setRoom({id: e.target.id,
+                            name: e.target.innerHTML });
+        }
+    }
+
+
 
 
     return !addNewChat ? (
@@ -43,12 +58,17 @@ function SidebarChat(props) {
   ) : (
     <div>
         <div className='sidebar_item' onClick={changeRoom}>
-            <RoomList roomList={props.rooms} />
+            <RoomList roomList={props.rooms}  />
         </div>
         <div onClick={createChat} className='sidebar_item'>
-
-            <h2>Start new chat</h2>
+            <h2>Create room</h2>
         </div>
+        { showCreateRoom ? <CreateRoom /> : null }
+
+        <div onClick={joinChat} className='sidebar_item'>
+            <h2>Join room</h2>
+        </div>
+        { showJoinRoom ? <JoinRoom /> : null }
     </div>
   )
 

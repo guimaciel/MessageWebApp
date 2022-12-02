@@ -1,11 +1,29 @@
 import { Avatar } from '@material-ui/core';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import "./Chat.css";
 import ChatList from './Components/ChatList';
 
 //integrar com o database
 function Chat(props) {
 
+  const [message, setMessage] = useState("");
+  const [roomId, setRoomId] = useState("props.room.id");
+  const [disableChat, setDisableChat] = useState( (props.room.id === null ? "disabled" : "") );
+
+  useEffect(() => {
+    setRoomId(props.room.id);
+    if (props.room.id) {
+      setDisableChat("");
+    } else {
+      setDisableChat("disabled");
+    }
+  }, [props.room.id])
+
+  const sendMessage = (e) => {
+    e.preventDefault();
+    console.log(message);
+    props.setMessage(message);
+  }
   
   return (
     <div className='chat'>
@@ -32,9 +50,9 @@ function Chat(props) {
 
         </div>
         <div className='chat_footer'>
-          <form>
-            <input placeholder="Type a message" type="text"/>
-            <button>Send</button> 
+          <form onSubmit={sendMessage}>
+            <input name="message" placeholder="Type a message" type="text" disabled={ disableChat } onChange={ (event) => setMessage(event.target.value) }/>
+            <button disabled={ disableChat }>Send</button> 
           </form>
 
         </div>

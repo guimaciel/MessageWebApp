@@ -11,4 +11,4 @@ export default function ChatItem (props) {
             <span className='chat_message'>{props.chatItem.message}</span>
          </div>
    )
-}
+} 

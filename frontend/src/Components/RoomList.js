@@ -10,6 +10,6 @@ export default function RoomList(props) {
       return (
          <Room room={room} key={room.id}/>
       );
-   });
+   }); 
    return roomList;
 }
