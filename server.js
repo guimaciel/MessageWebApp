@@ -8,18 +8,20 @@ const { hashPassword } = require("./helpers/users");
 const { registerUser } = require("./routes/register");
 const { getRooms } = require("./routes/rooms");
 const { loginUser } = require("./routes/login");
-const { getMessages } = require("./routes/messages");
+const { getMessages, postMessages } = require("./routes/messages");
 require("dotenv").config();
 
-const session = require("express-session");
+// const session = require("express-session");
 
 const app = express();
 
 app.use(express.json());
-app.use(cors({
-  origin: "http://localhost:3000",
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 
 const dbCredentials = {
   user: process.env.DB_NAME,
@@ -28,6 +30,28 @@ const dbCredentials = {
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
 };
+
+// SOCKET --->
+const http = require('http');
+const {Server} = require('socket.io');
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    method: ["GET","{PST"],
+  }
+});
+
+io.on("connection", (socket) => {
+  console.log(`User connected: ${socket.id}`);
+
+  socket.on("send_message", (data) => {
+    socket.broadcast.emit("receive_message",data);
+  })
+
+})
+// SOCKET <---
 
 app.use(
   cookieSession({
@@ -62,29 +86,32 @@ app.post("/register", registerUser);
 
 app.post("/login", loginUser);
 
-app.get("/messages", getMessages);
+app.get("/messages/:id", getMessages);
+
+// Mudar para post ------->
+app.get("/messages", postMessages);
 
 // Apenas para referencia do uso de cookie session - apagar depois de pronto ------->
-app.post('/new', async(req, res) => {
+app.post("/new", async (req, res) => {
   try {
     const userId = req.body.userId;
     req.session.userId = userId;
     console.log("ID:", userId);
-    res.send({message: "saves"}).status(201);
+    res.send({ message: "saves" }).status(201);
   } catch (error) {
     console.log(error);
   }
-})
+});
 
-app.get('/name', async(req,res)=>{
+app.get("/name", async (req, res) => {
   try {
     console.log(req.session.userId);
-    res.send({id: req.session.userId });
-  } catch(error) {
+    res.send({ id: req.session.userId });
+  } catch (error) {
     console.log(error);
   }
-})
-// <------- Apenas para referencia do uso de cookie session - apagar depois de pronto 
+});
+// <------- Apenas para referencia do uso de cookie session - apagar depois de pronto
 
-
-app.listen(port, () => console.log(`Server is runing on port ${port}`));
+// app.listen(port, () => console.log(`Server is runing on port ${port}`));
+server.listen(port, () => console.log(`Server is running on port ${port}`));
