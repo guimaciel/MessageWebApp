@@ -8,9 +8,15 @@ import './index.css';
 
 import App from './App';
 
+import { CookiesProvider } from "react-cookie";
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
+root.render(
+   <CookiesProvider>
+      <App />
+   </CookiesProvider>
+);
 
 // const root = document.getElementById('root'); // <- This is the //correct method call for React version 17
 

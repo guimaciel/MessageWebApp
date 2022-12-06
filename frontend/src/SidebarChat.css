@@ -3,20 +3,66 @@
     display:inline-flexbox;
     padding-left: 10px;
     padding-right: 10px;
-    cursor: pointer;
+    /* cursor: pointer; */
     border-bottom: 1px solid #f6f6f6;
-
 }
 
-.sidebar_item :hover{
+.sidebarChat_info {
+    /* background-color: rgb(162, 162, 162); */
+    display: flex;
+    flex-direction: row;
+    justify-content:center;
+    align-items: center;
+}
+
+.sidebarChat_info:hover > h2 {
     border-radius: 10px;
     background-color: #ebebeb;
-
+    padding: 0.5rem;
 }
+
+.sidebarChat_info > h2 {
+    color: #000;
+    cursor: pointer;
+}
+
+.sidebarChat_info > h4 {
+    color: rgb(176, 0, 0);
+    font-size: 0.8rem;
+    padding-left: 0.3rem;
+}
+
+/* .sidebar_item :hover{
+    border-radius: 10px;
+    background-color: #ebebeb;
+} */
 
 .sidebar_chat > h2 {
     display: flex;
     font-size: 16px;
     padding-left: 15px;
     margin-bottom: 4px;
+}
+
+.sidebarChat_info_form {
+    background-color: #ebebeb;
+    color: #000;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.5rem;
+    border-radius: 0.7rem;
+}
+
+.formSideBar {
+    padding: 0.5rem;
+    background-color: rgb(216, 216, 216);
+    text-align: center;
+    color: #000;
+    border-radius: 0.7rem;
+}
+
+.formSideBarBtn {
+    padding: 1rem;
+    background-color: rgb(216, 216, 216);;
+    color: #000000;
 }

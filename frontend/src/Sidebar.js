@@ -27,6 +27,8 @@ function Sidebar(props){
             <div className="sidebar_chat">
                 <SidebarChat rooms={props.rooms}
                             setRoom={props.setRoom}
+                            setCreateRoom={props.setCreateRoom}
+                            setJoinRoom={props.setJoinRoom}
                 /> 
             </div>
         </div>

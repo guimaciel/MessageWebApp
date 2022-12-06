@@ -6,9 +6,9 @@ const { Pool } = require("pg");
 const cors = require("cors");
 const { hashPassword } = require("./helpers/users");
 const { registerUser } = require("./routes/register");
-const { getRooms } = require("./routes/rooms");
+const { getRooms, createRooms, checkRoomExists, listRoomsNotInto, joinRooms } = require("./routes/rooms");
 const { loginUser } = require("./routes/login");
-const { getMessages, postMessages } = require("./routes/messages");
+const { getMessages, postMessages, updateLastRead } = require("./routes/messages");
 require("dotenv").config();
 
 // const session = require("express-session");
@@ -39,7 +39,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:3000",
-    method: ["GET","{PST"],
+    method: ["GET","POST"],
   }
 });
 
@@ -88,11 +88,17 @@ app.post("/login", loginUser);
 
 app.get("/messages/:id", getMessages);
 
-// Mudar para post ------->
-app.get("/messages", postMessages);
+app.post("/messages", postMessages);
+
+app.post("/updateLastViewed", updateLastRead);
+
+app.post("/checkRoomExists", checkRoomExists)
+app.post("/createRoom", createRooms);
+app.get("/listRoomsNotInto", listRoomsNotInto);
+app.post("/joinRooms", joinRooms);
 
 // Apenas para referencia do uso de cookie session - apagar depois de pronto ------->
-app.post("/new", async (req, res) => {
+app.post("/session", async (req, res) => {
   try {
     const userId = req.body.userId;
     req.session.userId = userId;
@@ -103,10 +109,19 @@ app.post("/new", async (req, res) => {
   }
 });
 
-app.get("/name", async (req, res) => {
+app.get("/sessionRoom", async (req, res) => {
   try {
-    console.log(req.session.userId);
-    res.send({ id: req.session.userId });
+    console.log("Session----", req.session);
+    res.send({ room: req.session.room  });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.get("/session", async (req, res) => {
+  try {
+    res.send({ id: req.session.userId,
+                name: req.session.userName });
   } catch (error) {
     console.log(error);
   }
