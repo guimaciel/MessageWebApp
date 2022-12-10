@@ -105,4 +105,30 @@ const joinRooms = (req, res) => {
     });
 };
 
-module.exports = { getRooms, createRooms, joinRooms, checkRoomExists, listRoomsNotInto };
+const roomsUsers = (req, res) => {
+  const room = req.params.room;
+  const pool = new Pool(dbCredentials);
+  pool
+    .query(
+      `SELECT users.name, users.id
+      FROM rooms_users 
+      JOIN users
+      ON user_id = users.id
+      WHERE room = $1;
+    `,
+      [room]
+    )
+    .then((res) => res.rows)
+    .then((rooms) => {
+      console.log("messages", rooms);
+      res.json(rooms);
+    })
+    .catch((err) => {
+      console.log("err", err);
+    })
+    .finally(() => {
+      pool.end();
+    });
+};
+
+module.exports = { getRooms, createRooms, joinRooms, checkRoomExists, listRoomsNotInto, roomsUsers };

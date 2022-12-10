@@ -6,6 +6,7 @@ import Sidebar from "./Sidebar";
 import Chat from "./Chat"
 import Login from "./Login";
 import { useCookies } from 'react-cookie';
+import { useScrollTrigger } from "@material-ui/core";
 
 const urlServer = "http://localhost:8000/";
 
@@ -26,6 +27,7 @@ function App() {
   const [roomId, setRoomId] = useState(null);
   const [createRoom, setCreateRoom] = useState('');
   const [joinRoom, setJoinRoom] = useState('');
+  const [usersRooms, setUsersRooms] = useState({});
   
 
 
@@ -199,11 +201,24 @@ function App() {
           updateLastViewed(idRoom, lastIdMsg);
         }).then((msg) => {
           console.log(message);
+          loadUsersRooms(idRoom);
         })
           
       } catch (error) {
           console.log(error);
       }
+  }
+
+  const loadUsersRooms = (idRoom) => {
+    try {
+      axios.get("http://localhost:8000/roomUsers/" + idRoom).then((res) => {
+        console.log("Users", res.data);
+        setUsersRooms(res.data);
+      })
+    } catch (error) {
+      console.log("Error",error);
+      setUsersRooms({});
+    }
   }
 
   const updateLastViewed = (idRoom, lastIdMsg) => {
@@ -346,7 +361,8 @@ function App() {
                 <Chat messages={messages} 
                     room={room} 
                     setMessage={setMessage} 
-                    userId={userId} />
+                    userId={userId}
+                    usersRooms={usersRooms} />
 
             </div>
 

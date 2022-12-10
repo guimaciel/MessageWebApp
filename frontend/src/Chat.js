@@ -2,6 +2,7 @@ import { Avatar } from '@material-ui/core';
 import React, {useState, useEffect, useRef} from 'react';
 import "./Chat.css";
 import ChatList from './Components/ChatList';
+import RoomsUsers from './Components/RoomsUsers';
 
 
 //integrar com o database
@@ -39,7 +40,9 @@ function Chat(props) {
 
   }
 
- 
+  console.log(props.usersRooms);
+
+   
   return (
     <div className='chat'>
         <div className='chat_header'>
@@ -51,21 +54,25 @@ function Chat(props) {
             </div>
             
         </div>
+
+        <div className='chat_container'>
+          <div className='rooms_users'>
+            <h3>Users</h3>
+            <RoomsUsers usersRooms={props.usersRooms} />
+            
+          </div>
         
-        <div className='chat_body'  >
+          <div className='chat_body'  >
+            
           
-         
-            {/* <span className='chat_name'>dddd</span>
-            <span className='chat_timestamp'>13:30</span> */}
+              {/* <span className='chat_name'>dddd</span>
+              <span className='chat_timestamp'>13:30</span> */}
 
-            <ChatList chatList={props.messages} 
-                      userId={props.userId}/>
+              <ChatList chatList={props.messages} 
+                        userId={props.userId}/>
+              <div ref={messagesEndRef} />
 
-            <div ref={messagesEndRef} />
-
-
-        
-      
+          </div>
         </div>
         
         <div className='chat_footer'>

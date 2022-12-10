@@ -6,7 +6,7 @@ const { Pool } = require("pg");
 const cors = require("cors");
 const { hashPassword } = require("./helpers/users");
 const { registerUser } = require("./routes/register");
-const { getRooms, createRooms, checkRoomExists, listRoomsNotInto, joinRooms } = require("./routes/rooms");
+const { getRooms, createRooms, checkRoomExists, listRoomsNotInto, joinRooms, roomsUsers } = require("./routes/rooms");
 const { loginUser } = require("./routes/login");
 const { getMessages, postMessages, updateLastRead } = require("./routes/messages");
 require("dotenv").config();
@@ -96,6 +96,7 @@ app.post("/checkRoomExists", checkRoomExists)
 app.post("/createRoom", createRooms);
 app.get("/listRoomsNotInto", listRoomsNotInto);
 app.post("/joinRooms", joinRooms);
+app.get("/roomUsers/:room", roomsUsers);
 
 // Apenas para referencia do uso de cookie session - apagar depois de pronto ------->
 app.post("/session", async (req, res) => {
