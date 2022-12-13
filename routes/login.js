@@ -21,22 +21,20 @@ const loginUser = (req, res) => {
     .then((res) => res.rows)
     .then((users) => {
       if (users.length !== 1) {
-        console.log("users", users);
         res.send({ message: "User not found" });
       } else {
-        console.log("passwords", password, users[0].password);
         bcrypt.compare(password, users[0].password, function(err,result) {
           if (result) {
-            console.log("logou");
             req.session.userId = users[0].id;
+            req.session.userName = users[0].name;
+            req.session.room = null;
             res.send({message: "saves"}).status(201);
           } else {
             console.log("nao logou");
           }
         });
       }
-      console.log("users", users);
-      console.log("teste", matchPass);
+
     })
     .catch((err) => {
       if (err) {

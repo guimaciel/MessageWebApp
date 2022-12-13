@@ -60,15 +60,15 @@ function SidebarChat(props) {
         <div className='sidebar_item' onClick={changeRoom}>
             <RoomList roomList={props.rooms}  />
         </div>
-        <div onClick={createChat} className='sidebar_item'>
+        <div onClick={createChat} className='sidebarChat_info'>
             <h2>Create room</h2>
         </div>
-        { showCreateRoom ? <CreateRoom /> : null }
+        { showCreateRoom ? <CreateRoom setCreateRoom={props.setCreateRoom} /> : null }
 
-        <div onClick={joinChat} className='sidebar_item'>
+        <div onClick={joinChat} className='sidebarChat_info'>
             <h2>Join room</h2>
         </div>
-        { showJoinRoom ? <JoinRoom /> : null }
+        { showJoinRoom ? <JoinRoom setJoinRoom={props.setJoinRoom} /> : null }
     </div>
   )
 

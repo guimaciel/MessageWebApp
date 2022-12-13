@@ -11,6 +11,8 @@ const dbCredentials = {
 
 const getMessages = (req, res) => {
   const room = req.params.id;
+  req.session.room = room;
+  const userId = req.session.userId
   const pool = new Pool(dbCredentials);
   pool
     .query(
@@ -26,7 +28,6 @@ const getMessages = (req, res) => {
     )
     .then((res) => res.rows)
     .then((messages) => {
-      console.log("messages", messages);
       res.json(messages);
     })
     .catch((err) => {
@@ -36,6 +37,31 @@ const getMessages = (req, res) => {
       pool.end();
     });
 };
+
+const updateLastRead = (req,res) => {
+  const room = req.body.room;
+  const userId = req.session.userId
+  const idLastMessage = req.body.idLastMessage;
+  console.log("Room", room, "UserId", userId, "Id Last Message", idLastMessage);
+  console.log("Params", req.body);
+  const pool = new Pool(dbCredentials);
+  pool
+    .query(`
+        UPDATE rooms_users SET last_msg_viewed = $1 WHERE room = $2 AND user_id = $3
+      `, [idLastMessage, room, userId]
+      )
+      .then((res) => res.rows)
+      .then((result) => {
+        console.log("Result",result);
+
+      })
+      .catch((err) => {
+        console.log("errsss",err);
+      })
+      .finally(() => {
+        pool.end();
+      });
+}
 
 const postMessages = (req, res) => {
   const timeElapsed = Date.now();
@@ -53,7 +79,6 @@ const postMessages = (req, res) => {
     )
     .then((res) => res.rows)
     .then((messages) => {
-      console.log("messages", messages);
       res.json(messages);
     })
     .catch((err) => {
@@ -64,4 +89,4 @@ const postMessages = (req, res) => {
     });
 };
 
-module.exports = { getMessages, postMessages };
+module.exports = { getMessages, postMessages, updateLastRead };

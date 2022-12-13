@@ -9,8 +9,8 @@ const Login = (props) => {
    const [nameReg, setNameReg] = useState("");
  
    const [userId, setUserId] = useState(props.userId);
+   const [username, setUsername] = useState(props.userName);
 
-   const [username, setUsername] = useState("");
    const [password, setPassword] = useState("");
    const [name, setName] = useState("");
  
@@ -19,7 +19,7 @@ const Login = (props) => {
    // Referëncia uso de cookie session - Apagar no final ------->
    const storeCookie = async()=>{
       try{
-      const {data} = await axios.post('http://localhost:8000/new', {
+      const {data} = await axios.post('http://localhost:8000/session', {
          userId: inputC.current.value,
       }, {withCredentials: true});
       } catch(error) {
@@ -29,7 +29,7 @@ const Login = (props) => {
 
    const getCookie = async () => {
       try {
-      const {data} = await axios.get('http://localhost:8000/name', {withCredentials: true});
+      const {data} = await axios.get('http://localhost:8000/session', {withCredentials: true});
       setUserId(data.message.userId);
       console.log(data.message);
       } catch(error) {

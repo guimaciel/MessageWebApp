@@ -26,21 +26,48 @@
 .chat_headerInfo > h3{
     margin-bottom: 5px;
     font-weight: 500;
+    color: #000;
 }
 
+.chat_container{
+    display: grid;
+    background-color: #FFFFFF;
+    grid-template-columns: 20% 80%;
+    /* flex-direction: row; */
+    flex: 1;
+    /* padding: 30px; */
+    overflow: scroll;
+    /* background-color: blue; */
+    padding: 0;
+    margin: 0;
+}
+
+.rooms_users {
+    /* background-color:aqua; */
+    border-right: 1rem solid #FAFAFA;
+ 
+}
+
+.rooms_users > h3{
+    color: #000;
+}
 
 .chat_body{
     flex: 1;
-    padding: 30px;
-    overflow: scroll;
+    /* padding: 30px; */
+    margin: 0px;
+    padding: 30px 0px 0px 1px;
+    /* overflow: scroll; */
+    scroll-margin-bottom: 0;
+    /* background-color:aqua; */
 }
 
 .chat_message{
-    position: relative;
     padding: 10px;
-    background-color: #ffffff;
     width: fit-content;
-    border-radius: 10px ;
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: justify;
 }
 
 .chat_footer{
@@ -64,3 +91,34 @@
     flex:1;
     border-radius: 7px;
 }
+
+.chatItem{
+    padding: 0.3rem;
+    margin: 0.5rem;
+    background-color: rgb(106, 106, 106);
+    border-radius: 1rem;
+    display:flex;
+    flex-direction: column;
+    margin-right: 5rem;
+}
+
+.chatItemUser{
+    padding: 0.3rem;
+    margin: 0.5rem;
+    background-color: rgb(61, 180, 164);
+    border-radius: 1rem;
+    display:flex;
+    flex-direction: column;
+    margin-left: 5rem;
+}
+
+.messageHeader{
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
