@@ -83,6 +83,7 @@ const postMessages = (req, res) => {
     })
     .catch((err) => {
       console.log("err", err);
+      res.status(400).message(err);
     })
     .finally(() => {
       pool.end();
