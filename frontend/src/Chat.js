@@ -77,7 +77,7 @@ function Chat(props) {
         
         <div className='chat_footer'>
           <form onSubmit={sendMessage}>
-            <input name="message" placeholder="Type a message" type="text" disabled={ disableChat } onChange={ (event) => setMessage(event.target.value) } value={message}/>
+            <input name="message" placeholder="Type a message" type="text" disabled={ disableChat } maxLength='500' onChange={ (event) => setMessage(event.target.value) } value={message}/>
             <button disabled={ disableChat }>Send</button> 
           </form>
 
