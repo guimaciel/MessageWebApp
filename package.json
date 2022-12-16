@@ -11,6 +11,7 @@
     "server": "nodemon server.js",
     "client": "cd frontend && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\""
+    "start": "concurrently \"node server.js\" \"npm run client\""
   },
   "repository": {
     "type": "git",
