@@ -1,7 +1,7 @@
 const cookieSession = require("cookie-session");
 const bcrypt = require("bcrypt");
 const express = require("express");
-const port = 8001;
+const port = process.env.serverport;
 const { Pool } = require("pg");
 const cors = require("cors");
 const { hashPassword } = require("./helpers/users");
