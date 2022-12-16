@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS rooms_users (
    id SERIAL PRIMARY KEY,
    room INTEGER NOT NULL,
    user_id INTEGER NOT NULL,
+   last_msg_viewed INTEGER NULL,
    FOREIGN KEY (user_id)
       REFERENCES users (id),
    FOREIGN KEY (room)

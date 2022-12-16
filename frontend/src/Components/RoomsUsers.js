@@ -7,9 +7,8 @@ export default function RoomsUsers(props) {
 
    if (!props.usersRooms) return "";
    const roomsUsers = Object.values(props.usersRooms).map((user) => {
-      console.log(user);
       return (
-         <h3>{user.name}</h3>
+         <h3 key={user.id}>{user.name}</h3>
       );
    }); 
    return roomsUsers;

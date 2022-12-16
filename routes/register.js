@@ -15,6 +15,7 @@ const registerUser = async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const name = req.body.name;
+
   const hashedPassword = await hashPassword(password, 12);
 
   const pool = new Pool(dbCredentials);
@@ -25,7 +26,7 @@ const registerUser = async (req, res) => {
     )
     .then((res) => res.rows)
     .then((users) => {
-      console.log("users", users);
+      res.status(200);
     })
     .catch((err) => {
       console.log("err", err);

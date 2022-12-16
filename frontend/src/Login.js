@@ -17,50 +17,111 @@ const Login = (props) => {
    const inputC = useRef();
 
    // Referëncia uso de cookie session - Apagar no final ------->
-   const storeCookie = async()=>{
-      try{
-      const {data} = await axios.post('http://localhost:8000/session', {
-         userId: inputC.current.value,
-      }, {withCredentials: true});
-      } catch(error) {
-      console.log(error);
-      }
-   };
+  //  const storeCookie = async()=>{
+  //     try{
+  //     const {data} = await axios.post('http://localhost:8000/session', {
+  //        userId: inputC.current.value,
+  //     }, {withCredentials: true});
+  //     } catch(error) {
+  //     console.log(error);
+  //     }
+  //  };
 
-   const getCookie = async () => {
-      try {
-      const {data} = await axios.get('http://localhost:8000/session', {withCredentials: true});
-      setUserId(data.message.userId);
-      console.log(data.message);
-      } catch(error) {
-      console.log(error);
-      }
-   }
+  //  const getCookie = async () => {
+  //     try {
+  //     const {data} = await axios.get('http://localhost:8000/session', {withCredentials: true});
+  //     if(data.message.userId) {
+  //       setUserId(data.message.userId);
+  //       console.log(data.message);
+  //     } else {
+  //       console.log("USER",data.message);
+  //     }
+  //     } catch(error) {
+  //     console.log(error);
+  //     }
+  //  }
    // <------- Referëncia uso de cookie session - Apagar no final 
 
    const register = () => {
+      if (!nameReg) {
+        alert("Insert Name to Register User!")
+        return;
+      }
+      if (!usernameReg) {
+        alert("Insert Email to Register User!")
+        return;
+      }
+      if (!passwordReg) {
+        alert("Insert Password to Register User!")
+        return;
+      }
       axios
-        .post("http://localhost:8000/register", {
-          email: usernameReg,
-          password: passwordReg,
-          name: nameReg,
-        })
-        .then((response) => {
-          console.log(response);
-        });
+      .post(`${process.env.REACT_APP_URL_SERVER}/checkUserExists`, {
+        email: usernameReg,
+      }, {withCredentials: true})
+      .then((users) => {
+        console.log("CHEC K USERS", users.data);
+        if (users.data.length > 0) {
+          console.log("ERRO");
+          alert("This email already exists!");
+        } else {
+            console.log("INSERIR");
+            axios
+              .post(`${process.env.REACT_APP_URL_SERVER}/register`, {
+                email: usernameReg,
+                password: passwordReg,
+                name: nameReg,
+              });
+        }
+      }).then(() => {
+        alert("User registred successfully!")
+        document.getElementById('email').value = usernameReg;
+        setUsername(usernameReg);
+        document.getElementById('usernameReg').value = "";
+        document.getElementById('emailReg').value = "";
+        document.getElementById('passwordReg').value = "";
+        setNameReg("");
+        setPasswordReg("");
+        setUsernameReg("");
+      });
     };
   
     const login = () => {
+      console.log("Login Clicked");
+      if (!username) {
+        alert("Insert Email to login!")
+        return;
+      }
+      if (!password) {
+        alert("Insert Password to login!")
+        return;
+      }
       axios
-        .post("http://localhost:8000/login", {
+        .post(`${process.env.REACT_APP_URL_SERVER}/login`, {
           email: username,
           password: password,
         }, {withCredentials: true})
         .then((response) => {
           console.log("fsdfsdafs",response);
           window.location.reload(false);
+        }, (error) => {
+          console.log("ERRO LOGIN", error);
+          alert("Email or Password is wrong!");
         });
     };
+
+    // const checkUserExists = (email) => {
+    //   axios
+    //   .post("http://localhost:8000/checkUserExists", {
+    //     email: username,
+    //   }, {withCredentials: true})
+    //   .then((response) => {
+    //     return true;
+    //   }, (error) => {
+    //     return false;
+    //   });
+    // };
+    
 
     return (
       <div className="App">
@@ -69,7 +130,8 @@ const Login = (props) => {
           <label></label>
           <input
             type="text"
-            placeholder="Username"
+            id="usernameReg"
+            placeholder="Name"
             onChange={(e) => {
               setNameReg(e.target.value);
             }}
@@ -77,15 +139,17 @@ const Login = (props) => {
           <label></label>
           <input
             type="text"
-            placeholder="e-mail"
+            placeholder="Email"
+            id="emailReg"
             onChange={(e) => {
               setUsernameReg(e.target.value);
             }}
           />
           <label></label>
           <input
-            type="text"
+            type="password"
             placeholder="Password"
+            id="passwordReg"
             onChange={(e) => {
               setPasswordReg(e.target.value);
             }}
@@ -96,25 +160,20 @@ const Login = (props) => {
           <h1>Login</h1>
           <input
             type="text"
-            placeholder="Username"
+            placeholder="Email"
+            id="email"
             onChange={(e) => {
               setUsername(e.target.value);
             }}
           />
           <input
-            type="text"
+            type="password"
             placeholder="Password"
             onChange={(e) => {
               setPassword(e.target.value);
             }}
           />
           <button onClick={login}> Login </button>
-        </div>
-        <div className="session">
-          <h1>Session</h1>
-          <input ref={inputC} />
-          <button onClick={storeCookie}> Store Cookie </button>
-          <button onClick={getCookie}> Retrieve Cookie </button>
         </div>
       </div>
     );

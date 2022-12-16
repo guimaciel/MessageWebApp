@@ -11,7 +11,6 @@ const Room = (props) => {
       return "";
    }
 
-   console.log([props.room]);
    return (
          <div className='sidebarChat_info'>
             <h2 id={props.room.id} value={props.room.name}>{props.room.name}</h2>

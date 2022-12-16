@@ -7,7 +7,7 @@ const cors = require("cors");
 const { hashPassword } = require("./helpers/users");
 const { registerUser } = require("./routes/register");
 const { getRooms, createRooms, checkRoomExists, listRoomsNotInto, joinRooms, roomsUsers } = require("./routes/rooms");
-const { loginUser } = require("./routes/login");
+const { loginUser, checkUserExists, logoutUser } = require("./routes/login");
 const { getMessages, postMessages, updateLastRead } = require("./routes/messages");
 require("dotenv").config();
 
@@ -18,7 +18,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.urlclient,
     credentials: true,
   })
 );
@@ -38,13 +38,12 @@ const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: process.env.urlclient,
     method: ["GET","POST"],
   }
 });
 
 io.on("connection", (socket) => {
-  console.log(`User connected: ${socket.id}`);
 
   socket.on("send_message", (data) => {
     socket.broadcast.emit("receive_message",data);
@@ -85,6 +84,8 @@ app.get("/rooms", getRooms);
 app.post("/register", registerUser);
 
 app.post("/login", loginUser);
+app.get("/logout", logoutUser);
+app.post("/checkUserExists", checkUserExists);
 
 app.get("/messages/:id", getMessages);
 
@@ -103,7 +104,6 @@ app.post("/session", async (req, res) => {
   try {
     const userId = req.body.userId;
     req.session.userId = userId;
-    console.log("ID:", userId);
     res.send({ message: "saves" }).status(201);
   } catch (error) {
     console.log(error);
@@ -112,7 +112,6 @@ app.post("/session", async (req, res) => {
 
 app.get("/sessionRoom", async (req, res) => {
   try {
-    console.log("Session----", req.session);
     res.send({ room: req.session.room  });
   } catch (error) {
     console.log(error);

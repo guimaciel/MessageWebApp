@@ -9,7 +9,7 @@ export default function JoinRoom(props) {
 
    useEffect(() => {
       try {
-         axios.get("http://localhost:8000/listRoomsNotInto", {withCredentials: true})
+         axios.get(`${process.env.REACT_APP_URL_SERVER}/listRoomsNotInto`, {withCredentials: true})
             .then((res) => {
                console.log("Rooms", res.data);
                setRooms(res.data);
