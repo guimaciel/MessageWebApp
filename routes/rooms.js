@@ -12,7 +12,6 @@ const dbCredentials = {
 const getRooms = (req, res) => {
   const pool = new Pool(dbCredentials);
   const userId = req.session.userId;
-  console.log("User Id", userId);
   pool
     .query(
       `SELECT distinct rooms.id, rooms.name,  (SELECT COUNT(*) FROM messages WHERE room = rooms.id AND id > rooms_users.last_msg_viewed) as nummessages FROM rooms
@@ -23,8 +22,7 @@ const getRooms = (req, res) => {
     )
     .then((res) => res.rows)
     .then((messages) => {
-      console.log("messages", messages);
-      res.json(messages);
+      res.status(200).json(messages);
     })
     .catch((err) => {
       console.log("err", err);
@@ -40,7 +38,7 @@ const checkRoomExists = (req, res) => {
   const pool = new Pool(dbCredentials);
   pool.query('SELECT * FROM rooms WHERE name = $1', [name])
       .then((resp) => {
-        res.json(resp.rows)
+        res.status(200).json(resp.rows)
       }).catch((err) => {
         console.log("err",err);
       }).finally(() => {
@@ -56,8 +54,7 @@ const createRooms = (req, res) => {
   pool.query(`INSERT INTO rooms (name, key) VALUES ($1, $2) returning *;`,[name, key])
       .then((res) => res.rows)
       .then((rooms) => {
-            console.log("rooms", rooms);
-            res.json(rooms);
+            res.status(200).json(rooms);
           })
       .catch((err) => {
         console.log("err",err);
@@ -71,8 +68,7 @@ const listRoomsNotInto = (req, res) => {
   const pool = new Pool(dbCredentials);
   pool.query(`select id, name, key from rooms where not exists (select 1 from rooms_users where rooms.id = rooms_users.room AND rooms_users.user_id = $1)`,[userId])
       .then((resp) => {
-        console.log("rooms--",resp.rows);
-        res.json(resp.rows);
+        res.status(200).json(resp.rows);
       })
       .catch((err) => {
         console.log("err",err);
@@ -84,7 +80,6 @@ const listRoomsNotInto = (req, res) => {
 const joinRooms = (req, res) => {
   const room = req.body.idRoom;
   const user_id = req.session.userId;
-  console.log("Room", req.body, "ID", user_id);
     const pool = new Pool(dbCredentials);
   pool
     .query(
@@ -94,8 +89,7 @@ const joinRooms = (req, res) => {
     )
     .then((res) => res.rows)
     .then((rooms) => {
-      console.log("rooms users insert", rooms);
-      res.json(rooms);
+      res.status(200).json(rooms);
     })
     .catch((err) => {
       console.log("err", err);
@@ -120,8 +114,7 @@ const roomsUsers = (req, res) => {
     )
     .then((res) => res.rows)
     .then((rooms) => {
-      console.log("messages", rooms);
-      res.json(rooms);
+      res.status(200).json(rooms);
     })
     .catch((err) => {
       console.log("err", err);

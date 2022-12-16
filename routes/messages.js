@@ -28,7 +28,7 @@ const getMessages = (req, res) => {
     )
     .then((res) => res.rows)
     .then((messages) => {
-      res.json(messages);
+      res.status(200).json(messages);
     })
     .catch((err) => {
       console.log("err", err);
@@ -42,8 +42,6 @@ const updateLastRead = (req,res) => {
   const room = req.body.room;
   const userId = req.session.userId
   const idLastMessage = req.body.idLastMessage;
-  console.log("Room", room, "UserId", userId, "Id Last Message", idLastMessage);
-  console.log("Params", req.body);
   const pool = new Pool(dbCredentials);
   pool
     .query(`
@@ -52,11 +50,10 @@ const updateLastRead = (req,res) => {
       )
       .then((res) => res.rows)
       .then((result) => {
-        console.log("Result",result);
 
       })
       .catch((err) => {
-        console.log("errsss",err);
+        console.log("error",err);
       })
       .finally(() => {
         pool.end();
@@ -64,11 +61,14 @@ const updateLastRead = (req,res) => {
 }
 
 const postMessages = (req, res) => {
+  console.log("-----------------------");
   const timeElapsed = Date.now();
   const today = new Date(timeElapsed);
 
   const message = req.body;
   const data = today.toUTCString();
+  
+  console.log("MSG A INSERIR", message);
 
   const pool = new Pool(dbCredentials);
   pool
@@ -79,7 +79,7 @@ const postMessages = (req, res) => {
     )
     .then((res) => res.rows)
     .then((messages) => {
-      res.json(messages);
+      res.status(201).json(messages);
     })
     .catch((err) => {
       console.log("err", err);

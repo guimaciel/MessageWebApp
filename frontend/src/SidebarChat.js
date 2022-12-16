@@ -11,8 +11,8 @@ function SidebarChat(props) {
     const addNewChat = true;
 
     const [seed, setSeed] = useState('');
-    const [showCreateRoom, setShowCreateRoom] = useState(false);
-    const [showJoinRoom, setShowJoineRoom] = useState(false);
+    // const [showCreateRoom, setShowCreateRoom] = useState(false);
+    // const [showJoinRoom, setShowJoineRoom] = useState(false);
     
     useEffect(()=> {
         setSeed(Math.floor(Math.random() *5000))         
@@ -21,8 +21,8 @@ function SidebarChat(props) {
 
     
     const createChat = () => {
-        setShowCreateRoom(true);
-        setShowJoineRoom(false);
+        props.setShowCreateRoom(true);
+        props.setShowJoineRoom(false);
         // //melhorar!!
         // const roomName = prompt("Insert your room name");
         // if (roomName){
@@ -32,8 +32,8 @@ function SidebarChat(props) {
     };
 
     const joinChat = () => {
-        setShowJoineRoom(true);
-        setShowCreateRoom(false);
+        props.setShowJoineRoom(true);
+        props.setShowCreateRoom(false);
     }
 
     const changeRoom = (e) => {
@@ -63,12 +63,12 @@ function SidebarChat(props) {
         <div onClick={createChat} className='sidebarChat_info'>
             <h2>Create room</h2>
         </div>
-        { showCreateRoom ? <CreateRoom setCreateRoom={props.setCreateRoom} /> : null }
+        { props.showCreateRoom ? <CreateRoom setCreateRoom={props.setCreateRoom} /> : null }
 
         <div onClick={joinChat} className='sidebarChat_info'>
             <h2>Join room</h2>
         </div>
-        { showJoinRoom ? <JoinRoom setJoinRoom={props.setJoinRoom} /> : null }
+        { props.showJoinRoom ? <JoinRoom setJoinRoom={props.setJoinRoom} /> : null }
     </div>
   )
 

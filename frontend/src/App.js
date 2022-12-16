@@ -8,9 +8,8 @@ import Login from "./Login";
 import { useCookies } from 'react-cookie';
 import { useScrollTrigger } from "@material-ui/core";
 
-const urlServer = "http://localhost:8000/";
 
-const socket = io.connect("http://localhost:8000");
+const socket = io.connect(process.env.REACT_APP_URL_SERVER);
 
 function App() {
 
@@ -28,47 +27,42 @@ function App() {
   const [createRoom, setCreateRoom] = useState('');
   const [joinRoom, setJoinRoom] = useState('');
   const [usersRooms, setUsersRooms] = useState({});
+  const [logout, setLogout] = useState(false);
+  const [showCreateRoom, setShowCreateRoom] = useState(false);
+  const [showJoinRoom, setShowJoineRoom] = useState(false);
   
 
 
   // Socket ----->
   useEffect(() => {
     socket.on("receive_message", (data) => {
-      // setDays(data.days);
-      // setAppointmentsRec(data.appointments);
-
-      getCookie();
-      // setRoomId(getCookieRoom());
-
-      try {
-        axios.get('http://localhost:8000/sessionRoom', {withCredentials: true}).then((res) => {
-          if (res.data.room) {
-            console.log(res.data.room);
-            if (data.msg.room.id === res.data.room) {
-              console.log("CARREGA");
-              loadMessages(res.data.room);
-            } else {
-              console.log("NAO CARREGA");
-            }
-          }
-        });
-      } catch(error) {
-        console.log(error);
-      }
-
-      console.log("aaaaaaaaa");
+      
       loadRooms();
-      // loadMessages();
-      console.log("USER", userId);
-      console.log(data);
-      console.log("Socket Rooms",rooms);
-      console.log("Socket Messages", messages);
-      console.log("Room ID", roomId);
-      // console.log(JSON.stringify(cookies["room"]));
-      // teste(data.msg);
-      // console.log("Room:",room);
-      // console.log(data.msg.room);
-      // setRoom(data.msg.room);
+
+      
+      // try {
+      //   axios.get(`${process.env.REACT_APP_URL_SERVER}/sessionRoom`, {withCredentials: true}).then((res) => {
+      //     if (res.data.room) {
+      //       console.log(res.data.room);
+      //       if (data.msg.room.id === res.data.room) {
+      //         console.log("CARREGA");
+      //         loadMessages(res.data.room);
+      //       } else {
+      //         console.log("NAO CARREGA");
+      //       }
+      //     }
+      //   });
+      // } catch(error) {
+      //   console.log(error);
+      // }
+      // console.log("aaaaaaaaa");
+      // loadRooms();
+      // console.log("USER", userId);
+      // console.log(data);
+      // console.log("Socket Rooms",rooms);
+      // console.log("Socket Messages", messages);
+      // console.log("Room ID", roomId);
+
       
     })
   }, [socket]);
@@ -79,22 +73,22 @@ function App() {
   // }, [message]);
   // <---- Socket
 
-  const getCookieRoom = async () => {
-    try {
-      axios.get('http://localhost:8000/sessionRoom', {withCredentials: true}).then((res) => {
-        if (res.data.room) {
-          // setRoomId(res.data.room);
-          return res.data.room;
-        }
-      });
-    } catch(error) {
-      console.log(error);
-    }
- }
+//   const getCookieRoom = async () => {
+//     try {
+//       axios.get(`${process.env.REACT_APP_URL_SERVER}/sessionRoom`, {withCredentials: true}).then((res) => {
+//         if (res.data.room) {
+//           // setRoomId(res.data.room);
+//           return res.data.room;
+//         }
+//       });
+//     } catch(error) {
+//       console.log(error);
+//     }
+//  }
 
   const getCookie = async () => {
     try {
-      const {data} = await axios.get('http://localhost:8000/session', {withCredentials: true});
+      const {data} = await axios.get(`${process.env.REACT_APP_URL_SERVER}/session`, {withCredentials: true});
       if (data.id) {
         setUserId(data.id);
         setUserName(data.name);
@@ -106,24 +100,26 @@ function App() {
  }
  getCookie();
 
+ useEffect(() => {
+  const fndRoom = rooms.find(({id}) => id == room.id);
+  if (fndRoom && fndRoom.nummessages > 0) {
+    loadMessages(fndRoom.id);
+  }
+ },[rooms])
+
+ useEffect(() => {
+  getCookie();
+ })
+
  // Load Rooms
  useEffect(()=>{
-    // if (room !== '') {
-    //   try {
-    //       axios.get('http://localhost:8000/rooms').then((res) => {
-    //           setRooms(res.data);
-    //       })
-    //   } catch (error) {
-    //       console.log(error);
-    //   }
-    // }
     loadRooms();
   },[]);
 
   const loadRooms = () => {
     if (room !== '') {
       try {
-          axios.get('http://localhost:8000/rooms', {withCredentials: true}).then((res) => {
+          axios.get(`${process.env.REACT_APP_URL_SERVER}/rooms`, {withCredentials: true}).then((res) => {
               setRooms(res.data);
           })
       } catch (error) {
@@ -134,34 +130,7 @@ function App() {
 
   // Load Room Messages
   useEffect(()=>{
-    // if (room.id) {
-    //   console.log(room, typeof(room));
-    //   // setCookie('room',room, { path: '/'});
-    //   try {
-    //     axios.get('http://localhost:8000/messages/' + room.id).then((res) => {
-    //       const msg = res.data.map((item) => {
-    //         return {
-    //           id: item.idmessage,
-    //           message: item.message,
-    //           dtMessage: item.dtmessage,
-    //           room: {
-    //             id: item.roomid,
-    //             name: item.roomname,
-    //             numMessages: 0,
-    //           },
-    //           user: {
-    //             id: item.userid,
-    //             name: item.username,
-    //           }
-    //         }
-    //       })
-    //       setMessages(msg);
-    //     })
-    //   } catch (error) {
-    //       console.log(error);
-    //   }
-    
-    // }
+
     if (room.id) {
       loadMessages(room.id);
     }
@@ -170,13 +139,11 @@ function App() {
 
   const loadMessages = (idRoom) => {
     
-      console.log("LOAD MSG",idRoom);
       // setCookie('room',room, { path: '/'});
       let lastIdMsg = 0;
-      try {
-        axios.get('http://localhost:8000/messages/' + idRoom, {withCredentials: true})
+      // try {
+        axios.get(`${process.env.REACT_APP_URL_SERVER}/messages/` + idRoom, {withCredentials: true})
         .then((res) => {
-          console.log("MSGS LOADED",res.data);
           const msg = res.data.map((item) => {
             return {
               id: item.idmessage,
@@ -196,23 +163,20 @@ function App() {
           if (msg.length > 0) {
             lastIdMsg = msg[msg.length-1].id;
           }
-          console.log(lastIdMsg);
           setMessages(msg);
           updateLastViewed(idRoom, lastIdMsg);
         }).then((msg) => {
-          console.log(message);
           loadUsersRooms(idRoom);
         })
           
-      } catch (error) {
-          console.log(error);
-      }
+      // } catch (error) {
+      //     console.log("error", error);
+      // }
   }
 
   const loadUsersRooms = (idRoom) => {
     try {
-      axios.get("http://localhost:8000/roomUsers/" + idRoom).then((res) => {
-        console.log("Users", res.data);
+      axios.get(`${process.env.REACT_APP_URL_SERVER}/roomUsers/` + idRoom).then((res) => {
         setUsersRooms(res.data);
       })
     } catch (error) {
@@ -227,21 +191,17 @@ function App() {
       idLastMessage: lastIdMsg,
       teste: 1,
     }
-    console.log("Params", rooms);
     
     try {
-      axios.post("http://localhost:8000/updateLastViewed", params, {withCredentials: true}).then((res) => {
-            console.log("Update", res.data);
+      axios.post(`${process.env.REACT_APP_URL_SERVER}/updateLastViewed`, params, {withCredentials: true}).then((res) => {
         });
     } catch (error) {
       console.log(error);
     }
 
     for ( let i = 0 ; i < rooms.length ; i++ ) {
-      console.log("Room", rooms[i]);
       if ( rooms[i].id == idRoom) {
         rooms[i].nummessages = 0;
-        console.log("Room Zerar", rooms[i]);
       }
     }
 
@@ -264,12 +224,12 @@ function App() {
         }
       }
 
-      
+      // console.log("Message To Server", msg);
+      console.log("Server",process.env.REACT_APP_URL_SERVER);
       try {
-        axios.post("http://localhost:8000/messages", msg, {withCredentials: true}).then((res) => {
-          // console.log("Data Insert", res.data);
+        axios.post(`${process.env.REACT_APP_URL_SERVER}/messages`, msg, {withCredentials: true}).then((res) => {
           const msgArr = [...messages];
-          console.log(res.data[0]);
+          console.log("Msg inserida", res);
           msg.id = res.data[0].id;
           msg.dtMessage = res.data[0].dt_message;
 
@@ -277,7 +237,6 @@ function App() {
 
           setMessages(msgArr);
           updateLastViewed(msg.room.id, msg.id);
-          console.log("nnnn",messages);
           socket.emit("send_message",{msg,messages});
           // console.log("MESSAGES",messages);
           // setRoom(null);
@@ -295,15 +254,13 @@ function App() {
   // }, [messages])
 
   useEffect(() => {
-    console.log("CREATE ROOM", createRoom);
     if (createRoom) {
       try {
-        axios.post("http://localhost:8000/checkRoomExists", {name: createRoom}).then((res) => {
+        axios.post(`${process.env.REACT_APP_URL_SERVER}/checkRoomExists`, {name: createRoom}).then((res) => {
           if (res.data.length > 0) {
             alert("Room already exists!");
           } else {
-            axios.post("http://localhost:8000/createRoom", {name: createRoom}).then((res) => {
-              console.log("INSERIU",res.data[0].id);
+            axios.post(`${process.env.REACT_APP_URL_SERVER}/createRoom`, {name: createRoom}).then((res) => {
               joinR(res.data[0].id);
             })
 
@@ -312,22 +269,15 @@ function App() {
       } catch(err) {
         console.log("err",err);
       };
-      //   axios.post("http://localhost:8000/createRoom", {name: createRoom}).then((res) => {
-      //     console.log("INSERIU",res);
-      //     // loadRooms();
-      //   })
-      // } catch(err) {
-      //   console.log("err", err);
-      // }
+      setShowCreateRoom(false);
     }
   },[createRoom]);
 
   const joinR = (idRoom) => {
     if (idRoom) {
       try {
-        axios.post("http://localhost:8000/joinRooms",{idRoom: idRoom},{withCredentials: true} )
+        axios.post(`${process.env.REACT_APP_URL_SERVER}/joinRooms`,{idRoom: idRoom},{withCredentials: true} )
             .then((resp) => {
-              console.log("Joined",resp.data);
               loadRooms();
             })
       } catch(err) {
@@ -338,9 +288,17 @@ function App() {
   }
 
   useEffect(() => {
-    console.log("Join Room", joinRoom);
     joinR(joinRoom);
+    setShowJoineRoom(false);
   },[joinRoom])
+
+  useEffect(() => {
+    if (logout) {
+      axios.get(`${process.env.REACT_APP_URL_SERVER}/logout`, {withCredentials: true}).then((res) => {
+        window.location.reload(false);
+      });
+    }
+  },[logout])
 
 
 
@@ -356,6 +314,11 @@ function App() {
                       setRoom={setRoom}
                       setCreateRoom={setCreateRoom}
                       setJoinRoom={setJoinRoom}
+                      setLogout={setLogout}
+                      setShowCreateRoom={setShowCreateRoom}
+                      setShowJoineRoom={setShowJoineRoom}
+                      showCreateRoom={showCreateRoom}
+                      showJoinRoom={showJoinRoom}
                  />
                 
                 <Chat messages={messages} 

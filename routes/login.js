@@ -21,7 +21,7 @@ const loginUser = (req, res) => {
     .then((res) => res.rows)
     .then((users) => {
       if (users.length !== 1) {
-        res.send({ message: "User not found" });
+        res.status(404).send({ message: "User not found" });
       } else {
         bcrypt.compare(password, users[0].password, function(err,result) {
           if (result) {
@@ -30,7 +30,7 @@ const loginUser = (req, res) => {
             req.session.room = null;
             res.send({message: "saves"}).status(201);
           } else {
-            console.log("nao logou");
+
           }
         });
       }
@@ -47,9 +47,27 @@ const loginUser = (req, res) => {
     });
 };
 
-const logoutUser = (req, res) => {
-  res.clearCookie(email);
-  (req.session = null), res.redirect("/login");
+const checkUserExists = (req, res) => {
+  const email = req.body.email;
+
+  const pool = new Pool(dbCredentials);
+  pool
+    .query("SELECT * FROM users WHERE email = $1", [email])
+    .then((res) => res.rows)
+    .then((users) => {
+      res.status(200).json(users);
+    })
+    .catch((err) => {
+        console.log("err", err);
+    })
+    .finally(() => {
+      pool.end();
+    });
 };
 
-module.exports = { loginUser, logoutUser };
+const logoutUser = (req, res) => {
+  req.session = null;
+  return res.status(200).send();
+};
+
+module.exports = { loginUser, logoutUser, checkUserExists };

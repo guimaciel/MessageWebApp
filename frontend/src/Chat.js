@@ -26,21 +26,21 @@ function Chat(props) {
     setRoomId(props.room.id);
     if (props.room.id) {
       setDisableChat("");
+      document.getElementById("rooms_users").style.visibility = 'visible';
     } else {
       setDisableChat("disabled");
+      document.getElementById("rooms_users").style.visibility = 'hidden';
     }
   }, [props.room.id])
 
   const sendMessage = (e) => {
     e.preventDefault();
-    console.log("aaa",messages);
+    console.log("Sent message",message);
     props.setMessage(message);
     setMessage("");
     scrollToBottom();
 
   }
-
-  console.log(props.usersRooms);
 
    
   return (
@@ -56,7 +56,7 @@ function Chat(props) {
         </div>
 
         <div className='chat_container'>
-          <div className='rooms_users'>
+          <div className='rooms_users' id="rooms_users">
             <h3>Users</h3>
             <RoomsUsers usersRooms={props.usersRooms} />
             
