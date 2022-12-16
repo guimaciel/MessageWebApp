@@ -11,7 +11,8 @@
     "server": "nodemon server.js",
     "client": "cd frontend && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "start": "concurrently \"node server.js\" \"npm run client\""
+    "start": "concurrently \"node server.js\" \"npm run client\"",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "repository": {
     "type": "git",
